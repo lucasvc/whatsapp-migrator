@@ -14,7 +14,7 @@ import org.spongycastle.jce.provider.*;
  */
 
 public class crypt12 {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         String crypt12File    = "msgstore.db.crypt12";      // input file
         String crypt12FileEnc = "msgstore.db.crypt12.enc";  // encrypted file with header and footer stripped
         String decryptedZlibFile = "msgstore.db.zlib";      // zlib output file
@@ -30,52 +30,55 @@ public class crypt12 {
         
         BufferedInputStream is;
         RandomAccessFile raf;
-        FileOutputStream os;                                                 
+        FileOutputStream os;
+        CipherInputStream isCipher;
+        Cipher cipher;        
         
-        Security.insertProviderAt((Provider)new BouncyCastleProvider(), 1);
+        try {
         
-        System.out.format("%n");
-        System.out.format("whatsapp crypt12 decryption tool - http://www.digitalinternals.com/security/decrypt-whatsapp-crypt12-database-messages/559/%n%n");
+            Security.insertProviderAt((Provider)new BouncyCastleProvider(), 1);
         
-        // get K
-        is = new BufferedInputStream(new FileInputStream(keyFile));
-        is.read(keyData);
-        System.arraycopy(keyData, 126, aesK, 0, 32);
-        is.close();
-        
-        // get IV
-        is = new BufferedInputStream(new FileInputStream(crypt12File));
-        is.read(crypt12Header);
-        System.arraycopy(crypt12Header, 51, aesIV, 0, 16); 
-        is.close();
-        
-        //System.out.println("K:" +Arrays.toString(aesK));
-        //System.out.println("IV:"+Arrays.toString(aesIV));
-        System.out.println("K:" +ListToHex(aesK));
-        System.out.println("IV:"+ListToHex(aesIV));
-        
-        // create enc file by stripping header and footer
-        System.out.format("creating encrypted file with header/footer stripped: %s%n",crypt12FileEnc);
-        is = new BufferedInputStream(new FileInputStream(crypt12File));  // read msgstore.db.crypt12
-        is.skip(67);    // 67 byte header
-        int available = is.available();                
-        raf = new RandomAccessFile(new File(crypt12FileEnc), "rw");
-        
-        while((read=is.read(buffer))!=-1) {
-            raf.write(buffer, 0, read);                
-        }
-        raf.setLength(available - 20);  // 20 byte footer
-        raf.close();
+            System.out.format("%n");
+            System.out.format("whatsapp crypt12 decryption tool - http://www.digitalinternals.com/security/decrypt-whatsapp-crypt12-database-messages/559/%n%n");
+            
+            // get K
+            is = new BufferedInputStream(new FileInputStream(keyFile));
+            is.read(keyData);
+            System.arraycopy(keyData, 126, aesK, 0, 32);
+            is.close();
+            
+            // get IV
+            is = new BufferedInputStream(new FileInputStream(crypt12File));
+            is.read(crypt12Header);
+            System.arraycopy(crypt12Header, 51, aesIV, 0, 16); 
+            is.close();
+            
+            //System.out.println("K:" +Arrays.toString(aesK));
+            //System.out.println("IV:"+Arrays.toString(aesIV));
+            System.out.println("K:" +ListToHex(aesK));
+            System.out.println("IV:"+ListToHex(aesIV));
+            
+            // create enc file by stripping header and footer
+            System.out.format("creating encrypted file with header/footer stripped: %s%n",crypt12FileEnc);
+            is = new BufferedInputStream(new FileInputStream(crypt12File));  // read msgstore.db.crypt12
+            is.skip(67);    // 67 byte header
+            int available = is.available();                
+            raf = new RandomAccessFile(new File(crypt12FileEnc), "rw");
+            
+            while((read=is.read(buffer))!=-1) {
+                raf.write(buffer, 0, read);                
+            }
+            raf.setLength(available - 20);  // 20 byte footer
+            raf.close();
                  
         
-        // create zlib output file
-        try {            
+            // create zlib output file                    
             System.out.format("creating zlib output file: %s%n",decryptedZlibFile);
             
             is = new BufferedInputStream(new FileInputStream(crypt12FileEnc));                                                                                 
-            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SC");            
+            cipher = Cipher.getInstance("AES/CBC/NoPadding", "SC");            
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(aesK, "AES"), new IvParameterSpec(aesIV));            
-            CipherInputStream isCipher = new CipherInputStream(is, cipher);
+            isCipher = new CipherInputStream(is, cipher);
             os = new FileOutputStream(decryptedZlibFile);
             
             while((read=isCipher.read(buffer))!=-1) {            
@@ -83,21 +86,16 @@ public class crypt12 {
 		    }
             
             os.close();
-            is.close();  
-        }
-        catch (Exception e) {
-            System.err.println("exception:" + e.getMessage());
-            e.printStackTrace();
-        }            
+            is.close(); 
+                    
         
-        // create sqlite3 db output file
-        try {                        
+            // create sqlite3 db output file                                
             System.out.format("creating sqlite3 output file: %s%n",decryptedDbFile);
             
             is = new BufferedInputStream(new FileInputStream(crypt12FileEnc));            
-            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SC");            
+            cipher = Cipher.getInstance("AES/CBC/NoPadding", "SC");            
             cipher.init(2, new SecretKeySpec(aesK, "AES"), new IvParameterSpec(aesIV));
-            CipherInputStream isCipher = new CipherInputStream(is, cipher);
+            isCipher = new CipherInputStream(is, cipher);
             InflaterInputStream isInflater = new InflaterInputStream(isCipher, new Inflater(false));
             os = new FileOutputStream(decryptedDbFile);
             
@@ -113,8 +111,7 @@ public class crypt12 {
             e.printStackTrace();
         }
         
-        System.out.format("%n");        
-            
+        System.out.format("%n");
     }
     
     
