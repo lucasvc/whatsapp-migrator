@@ -46,5 +46,5 @@ WhatsApp crypt12 decryption tool was created by and is maintained by **[Mohamed 
 
 ## Copyright and License
 
-Copyright 2008-2016 Digital Internals. Code released under the [MIT](https://gitlab.com/digitalinternals/crypt12/blob/master/LICENSE) license.
+Copyright 2008-2016 Digital Internals. Code released under the [MIT](https://gitlab.com/digitalinternals/whatsapp-crypt12/blob/master/LICENSE) license.
 
