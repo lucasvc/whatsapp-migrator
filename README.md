@@ -31,7 +31,7 @@ $ cp /path/to/file/msgstore.db.crypt12 .
 * Decrypt using: 
 ```
 java -cp "lib/whatsapp_spongycastle.jar:." crypt12
-````
+```
 
 ## Limitations
 
