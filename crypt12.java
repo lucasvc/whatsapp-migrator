@@ -34,8 +34,7 @@ public class crypt12 {
         CipherInputStream isCipher;
         Cipher cipher;        
         
-        try {
-        
+        try {        
             Security.insertProviderAt((Provider)new BouncyCastleProvider(), 1);
         
             System.out.format("%n");
