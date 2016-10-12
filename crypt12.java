@@ -9,7 +9,7 @@ import org.spongycastle.jce.provider.*;
 /**
  * WhatsApp crypt12 decryption tool - http://www.digitalinternals.com/security/decrypt-whatsapp-crypt12-database-messages/559/
  * 
- * Licensed under MIT (https://gitlab.com/digitalinternals/-------/blob/master/LICENSE)
+ * Licensed under MIT (https://gitlab.com/digitalinternals/whatsapp-crypt12/blob/master/LICENSE)
  * Copyright 2008-2016 Digital Internals
  */
 
