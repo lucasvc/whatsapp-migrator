@@ -1,4 +1,4 @@
-# [WhatsApp crypt12 decryption tool](http://www.digitalinternals.com/security/decrypt-whatsapp-crypt12-database-messages/559/)
+# [WhatsApp crypt12 decryption tool](https://stackpointer.io/security/decrypt-whatsapp-crypt12-database-messages/559/)
 
 A Java tool to decrypt WhatsApp crypt12 files.
 
@@ -16,7 +16,7 @@ A Java tool to decrypt WhatsApp crypt12 files using a modified cryptography API 
 To decrpt, do the following:
 * Clone the repo.
 ```
-$ git clone https://gitlab.com/digitalinternals/whatsapp-crypt12.git
+$ git clone https://gitlab.com/stackpointer/whatsapp-crypt12.git
 $ cd whatsapp-crypt12
 ```
 * Compile crypt12.java. 
@@ -39,12 +39,12 @@ java -cp "lib/whatsapp_spongycastle.jar:." crypt12
 
 ## Creator
 
-WhatsApp crypt12 decryption tool was created by and is maintained by **[Mohamed Ibrahim](http://www.digitalinternals.com/)**.
+WhatsApp crypt12 decryption tool was created by and is maintained by **[Mohamed Ibrahim](https://stackpointer.io/)**.
 
 * https://twitter.com/ibrahimayoob
 * https://gitlab.com/ibrahim
 
 ## Copyright and License
 
-Copyright 2008-2016 Digital Internals. Code released under the [MIT](https://gitlab.com/digitalinternals/whatsapp-crypt12/blob/master/LICENSE) license.
+Copyright 2008-2016 Digital Internals. Code released under the [MIT](LICENSE) license.
 
